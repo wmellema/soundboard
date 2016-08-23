@@ -1,0 +1,13 @@
+.buttons button {
+	width: 10%;
+	height: 10%;
+	margin: 5px;
+	float:left;
+}
+.buttons {
+	float:left;
+	width:100%;
+}
+.content{
+	clear:both;
+}
