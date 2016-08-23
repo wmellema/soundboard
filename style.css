@@ -1,8 +1,13 @@
-.buttons button {
+.buttons div {
 	width: 10%;
 	height: 10%;
 	margin: 5px;
 	float:left;
+}
+.buttons div button {
+	width:90%;
+	height:100%;
+	float:right; 
 }
 .buttons {
 	float:left;
@@ -15,5 +20,5 @@
 
 body {
   padding : 10px ;
-  
+ 	
 }

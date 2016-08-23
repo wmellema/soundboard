@@ -2,7 +2,12 @@ import csv
 from urllib.request import urlopen
 import os, sys
 
+def lr_justify(left, right, width):
+    return '{}{}{}'.format(left, ' '*(width-len(left+right)), right)
+def stdout(left,right):
 
+    sys.stdout.write(lr_justify(left,right,56))
+    sys.stdout.write('\b' * len(lr_justify(left,right,56)))   # \b: non-deleting backspace
 
 
 def download_file(url,cat):
@@ -15,7 +20,7 @@ def download_file(url,cat):
 	
 	file_size = usock.headers['Content-Length']
 	print ("")
-	print ("Downloading: %s Bytes: %s" % (file_name, file_size))
+	standard_message = "Downloading: %s Bytes: %s" % (file_name, file_size)
 
 	if os.path.isfile(file_name):
 		print ("Already Downloaded")
@@ -31,8 +36,11 @@ def download_file(url,cat):
 
 		downloaded = downloaded + len(buff)
 		f.write(buff)
-		done = int(50 * downloaded / file_size)
-		sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )
+		done = int(25 * downloaded / file_size)
+		download_mesg = ("\r[%s%s]" % ('=' * done, ' ' * (25-done))) 
+		
+		
+		stdout(download_mesg,standard_message)
 		sys.stdout.flush()
 
 	f.close()

@@ -91,13 +91,17 @@ var Base = function(methods){
 //Complete class for the Sound object. Generates its own DIV's and HTML5 tags to play stuff.
 var Sound = Base({ 
 	// Init all the variables. 
-    initialize: function(name, file, target='Sounds') {
+    initialize: function(name, file, target='Sounds',shortcut=null) {
         this.name = name;
 		this.file = file
 		this.button = null;
 		this.audioelement;
 		this.id = lastID + 1;
 		this.target = target;
+		this.shortcut = shortcut;
+		if(shortcut > 9){
+			this.shortcut = null;
+		}
 		lastID ++;
 
 
@@ -133,6 +137,8 @@ var Sound = Base({
 		// Statement for JS class based shenanigans.
 		obj = this
 
+
+		div = document.createElement('div');
 		// Create a button and add some text to it
 		obj.button = document.createElement("BUTTON");
 		obj.button.appendChild(document.createTextNode(obj.name));
@@ -143,7 +149,13 @@ var Sound = Base({
 
 		// Get or create parent element. Used for catagory based display
 		var el = getOrCreateElement(obj.target,obj.target)
-		el.appendChild(obj.button);
+		if(obj.shortcut != null){
+			a = document.createElement('a')
+			a.appendChild(document.createTextNode(obj.shortcut))
+			div.appendChild(a);
+		}
+		div.appendChild(obj.button);
+		el.appendChild(div);
 
 		// Create audio element and set appropriate settings
 		obj.audioelement = document.createElement("AUDIO");
@@ -244,13 +256,13 @@ var modes = {
 	'J' : 'none',
 	'K' : 'none',
 	'L' : 'none',
-	'M' : 'Music',
+	'M' : 'none',
 	'N' : 'none',
 	'O' : 'none',
 	'P' : 'none',
 	'Q' : 'none',
 	'R' : 'none',
-	'S' : 'Sounds',
+	'S' : 'none',
 	'T' : 'none',
 	'U' : 'none',
 	'V' : 'none',
@@ -269,7 +281,7 @@ function addModule(title,shortcut = null){
 	}
 	getScript(escape(title)+'/files.js', function(){
 		for (var i = 0; i < soundfiles.length; i++){
-			new Sound(soundfiles[i],escape(title)+"/"+soundfiles[i],title);
+			new Sound(soundfiles[i],escape(title)+"/"+soundfiles[i],title,i);
 		}
 	});	
 }
