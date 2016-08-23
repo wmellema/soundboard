@@ -4,29 +4,73 @@
 <head>
 	<title>D&D Soundboard</title>
 	<link rel='stylesheet' href="style.css">
-</head>
-
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <body>
-	<div class='header' id='header'style="float:left">
-		<img src='http://gamerhavennews.com/wp-content/uploads/2011/05/dnd-logo.jpg' width='300px' height='auto' style="float:left"/>
-		<h1 style="float:left">Soundboard</h1>
 
-	</div>
-	<div class='content' id='content'>
+	<div class="page-header" id="page-header">
+		<img src='http://gamerhavennews.com/wp-content/uploads/2011/05/dnd-logo.jpg' width='300px' height='auto' style="float:left"/>
+        <h1>Panels with nav tabs.<span class="pull-right label label-default">:)</span></h1>
+    </div>
+    <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading">
+                        <ul class="nav nav-tabs" id="tabs">
+                            
+                        </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content" id="contents">
+                    </div>
+                </div>
+            </div>
+        
+
+  
+	
 		
 	
 
 		
-	</div>
 </body>
 
 <script>
+var lastTabID = 0;
 
+function createTab(name){
+
+	// Create div and title header. Then add appropriate settings.
+	var div = document.createElement("div");
+	var tab = document.createElement("li");
+	var title = document.createElement('a');
+	title.href= "#tab"+lastTabID;
+	
+	id = "#tab"+lastTabID;
+	console.log(id);
+	title.setAttribute("data-toggle","tab");
+	title.appendChild(document.createTextNode(name))
+	
+	tab.appendChild(title)
+	
+	div.className = "tab-pane fade";
+	div.id = "tab"+lastTabID;
+	div.setAttribute('name',name);
+	// Add all created objects
+	document.getElementById('tabs').appendChild(tab);
+	document.getElementById('contents').appendChild(div);
+	//document.getElementById('content').appendChild(div);
+	// Return newly created object
+
+	lastTabID++;
+}
 // Container to keep all sounds in one place. This is a Dictionary within a dictionary to be able to search by catagory.
 var sounds = {};
 
 // Counter to keep track of unique ID's
 var lastID = 0;
+
+
 
 
 // Base class for initializing the Sound class
@@ -98,7 +142,7 @@ var Sound = Base({
 		obj.button.name = obj.target;
 
 		// Get or create parent element. Used for catagory based display
-		var el = getOrCreateElement(obj.target)
+		var el = getOrCreateElement(obj.target,obj.target)
 		el.appendChild(obj.button);
 
 		// Create audio element and set appropriate settings
@@ -115,7 +159,7 @@ var Sound = Base({
 });
 
 // Function that creates an element or returns existing element
-function getOrCreateElement(id){
+function getOrCreateElement(id,name){
 	var el = document.getElementById(id);
 	// Check if element is there
 	if(el == null){
@@ -127,8 +171,9 @@ function getOrCreateElement(id){
 		div.id = id;
 		div.className = "buttons";
 		// Add all created objects
-		document.getElementById('content').appendChild(title);
-		document.getElementById('content').appendChild(div);
+		console.log(name)
+		document.getElementsByName(name)[0].appendChild(title);
+		document.getElementsByName(name)[0].appendChild(div);
 		// Return newly created object
 		return document.getElementById(id);
 	}else{
@@ -175,22 +220,8 @@ function getScript(url, callback) {
 // Create the Stop All button at the top
 var button = document.createElement("BUTTON");
 button.appendChild(document.createTextNode("Stop All"));
-document.getElementById('header').appendChild(button);
+document.getElementById('page-header').appendChild(button);
 button.onclick = stopAll;
-
-
-// Create new sounds. No need to store them manually, this is done in the init function of [SOUND]
-
-function addModule(title){
-	getScript(escape(title)+'/files.js', function(){
-	for (var i = 0; i < soundfiles.length; i++){
-		new Sound(soundfiles[i],escape(title)+"/"+soundfiles[i],title);
-	}
-});	
-}
-
-addModule("Age of Sail");
-addModule("Dark Forest");
 
 
 // Variable to keep track of current shortcut mode
@@ -201,7 +232,7 @@ var mode = "none";
 // Dictionary to map keys to different cacagories
 // Match these shortcut modifier keys to your target of your sound.
 var modes = {
-	'A' : 'none',
+	'A' : 'Age of Sail',
 	'B' : 'none',
 	'C' : 'none',
 	'D' : 'none',
@@ -229,6 +260,25 @@ var modes = {
 	'Z' : 'none',
 
 }
+// Create new sounds. No need to store them manually, this is done in the init function of [SOUND]
+
+function addModule(title,shortcut = null){
+	createTab(title);
+	if(shortcut){
+		modes[shortcut] = title;
+	}
+	getScript(escape(title)+'/files.js', function(){
+		for (var i = 0; i < soundfiles.length; i++){
+			new Sound(soundfiles[i],escape(title)+"/"+soundfiles[i],title);
+		}
+	});	
+}
+
+addModule("Age of Sail");
+addModule("Dark Forest","D");
+addModule("The Tavern");
+
+
 
 // Create keyDown listener and call the [checkKey()] function
 document.onkeydown = checkKey;
@@ -271,8 +321,11 @@ function playSound(number){
 	// Rework the keyboard code to actual numbers. the key 0 is 48, so if you subtract 48 from the number, you get the number pressed
 	number -= 48;
 	// Play stored number
+	console.log(numSounds[number].name);
 	numSounds[number].play();
 }
 
 </script>
+	
+	
 </html>
