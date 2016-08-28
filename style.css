@@ -16,6 +16,10 @@
 .content{
 	clear:both;
 }
+.panel {
+	float:left;
+	width:50%;
+}
 
 
 body {

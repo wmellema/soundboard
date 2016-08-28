@@ -92,8 +92,11 @@ var Sound = Base({
 		
 	},
 	stop : function(){
+
 		obj = this;
-		obj.fade(true);
+		if(obj.audioelement.paused != true){
+			obj.fade(true);
+		}
 		
 	},
 	fade : function(fadeout){
@@ -107,6 +110,7 @@ var Sound = Base({
 		}
 		
     	var fadeAudio = setInterval(function () {
+    		console.log('fading sound '+obj.name)
 	        // Only fade if past the fade out point or not at zero already
 	        if ((sound.currentTime >= fadePoint) && (sound.volume != 0.0) && fadeOut) {
 	            sound.volume -= 0.1;
@@ -115,7 +119,7 @@ var Sound = Base({
 	            sound.volume += 0.1;
 	        }
 	        // When volume at zero stop all the intervalling
-	        if ((sound.volume <= 0.01 && fadeOut) || (sound.volume >= 0.999 && !fadeOut)) {
+	        if ((sound.volume < 0.1 && fadeOut) || (sound.volume > 0.9 && !fadeOut)) {
 	            clearInterval(fadeAudio);
 	            if(fadeOut){
 	            	sound.volume = 0;
