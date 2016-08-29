@@ -158,6 +158,7 @@ var Sound = Base({
 		obj.audioelement = document.createElement("AUDIO");
 		obj.audioelement.src = obj.file;
 		obj.audioelement.name
+		obj.audioelement.loop = true;
 		obj.button.appendChild(obj.audioelement);
 
 		// Add function to play/pause to button
@@ -286,6 +287,7 @@ function addModule(title,shortcut = null){
 addModule("The Dungeon");
 addModule("Dark Forest","D");
 addModule("The Tavern");
+addModule("Olde Towne");
 
 
 
