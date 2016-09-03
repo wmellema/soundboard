@@ -1,12 +1,14 @@
 .buttons div {
-	width: 10%;
-	height: 10%;
+	width: 170px;
+	height: 100;
 	margin: 5px;
 	float:left;
 }
 .buttons div button {
 	width:90%;
-	height:100%;
+	height:80%;
+	margin-bottom: 5px;
+	overflow:hidden;
 	float:right; 
 }
 .buttons {
@@ -18,7 +20,7 @@
 }
 .panel {
 	float:left;
-	width:50%;
+	width:100%;
 }
 
 

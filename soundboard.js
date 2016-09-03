@@ -61,6 +61,7 @@ var Sound = Base({
 		this.id = lastID + 1;
 		this.target = target;
 		this.shortcut = shortcut;
+		this.container = null;
 		if(shortcut > 9){
 			this.shortcut = null;
 		}
@@ -129,6 +130,21 @@ var Sound = Base({
 
     	}, 200);
 	},
+	createControls : function(){
+		obj = this;
+
+		var loop = document.createElement("input");
+		loop.setAttribute('type','checkbox');
+		obj.container.appendChild(loop);
+
+		var volume = document.createElement("input");
+		volume.setAttribute('type','range')
+		volume.setAttribute('min','0.0');
+		volume.setAttribute('max','1.0');
+
+		obj.container.appendChild(volume);
+
+	},
 	init : function(){
 
 		// Statement for JS class based shenanigans.
@@ -146,6 +162,7 @@ var Sound = Base({
 
 		// Get or create parent element. Used for catagory based display
 		var el = getOrCreateElement(obj.target,obj.target)
+		obj.container = div;
 		if(obj.shortcut != null){
 			a = document.createElement('a')
 			a.appendChild(document.createTextNode(obj.shortcut))
@@ -163,6 +180,8 @@ var Sound = Base({
 
 		// Add function to play/pause to button
 		obj.button.onclick = buttonClicked;
+
+		obj.createControls();
 	}
 	
 	
@@ -288,6 +307,7 @@ addModule("The Dungeon");
 addModule("Dark Forest","D");
 addModule("The Tavern");
 addModule("Olde Towne");
+addModule("Age of Sail");
 
 
 
