@@ -11,13 +11,13 @@ def stdout(left,right):
 
 
 def download_file(url,cat):
-	
+
 	file_name = os.path.join(cat,url.split('/')[-1])
 	if os.path.isfile(file_name):
 		print ("Already Downloaded")
 		return
 	usock = urlopen(url)
-	
+
 	file_size = usock.headers['Content-Length']
 	print ("")
 	standard_message = "Downloading: %s Bytes: %s" % (file_name, file_size)
@@ -37,9 +37,9 @@ def download_file(url,cat):
 		downloaded = downloaded + len(buff)
 		f.write(buff)
 		done = int(25 * downloaded / file_size)
-		download_mesg = ("\r[%s%s]" % ('=' * done, ' ' * (25-done))) 
-		
-		
+		download_mesg = ("\r[%s%s]" % ('=' * done, ' ' * (24-done))+">") 
+
+
 		stdout(download_mesg,standard_message)
 		sys.stdout.flush()
 
@@ -63,20 +63,14 @@ with open('tabletopsounds.csv','r') as file:
 						continue
 					if i is not 1:
 						js.write(",")
-					
+
 					if row[i] not in downloaded:
 						downloaded.append(row[i])
-					
-					
+
+
 						download_file(row[i],row[0])
 					else:
 						print ("Found duplicate")
 
 					js.write('"'+row[i].split('/')[-1]+'"')
 				js.write('];')
-
-
-
-
-
-
